@@ -1,0 +1,21 @@
+﻿<Window x:Class="Erigeron.WPF.SpinePlayer.Mono.SpineViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Erigeron.WPF.SpinePlayer.Mono"
+        xmlns:locals="clr-namespace:Erigeron.WPF.SpinePlayer.Mono.Spine"
+        xmlns:s="clr-namespace:Erigeron.WPF.SpinePlayer.Mono.Support"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None"
+        Title="Erigeron.WPF.SpinePlayer.Mono.SpineViewer" Height="600" Width="800" SizeChanged="Window_SizeChanged">
+    <Grid x:Name="SpineContainer">
+        <s:MonoGameContentControl Width="800" Height="600">
+            <s:MonoGameContentControl.DataContext>
+                <locals:SpineManager x:Name="mSpineManager"/>
+            </s:MonoGameContentControl.DataContext>
+        </s:MonoGameContentControl>
+    </Grid>
+</Window>

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Spine.Monogame">
+      <HintPath>Library\Spine.Monogame.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
