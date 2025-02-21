@@ -6,13 +6,20 @@
         xmlns:local="clr-namespace:Erigeron.WPF.SpinePlayer.Mono"
         xmlns:locals="clr-namespace:Erigeron.WPF.SpinePlayer.Mono.Spine"
         xmlns:s="clr-namespace:Erigeron.WPF.SpinePlayer.Mono.Support"
+        ShowInTaskbar="False"
         mc:Ignorable="d"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStyle="None"
-        Title="Erigeron.WPF.SpinePlayer.Mono.SpineViewer" Height="600" Width="800" SizeChanged="Window_SizeChanged">
+        Title="Erigeron.WPF.SpinePlayer.Mono.SpineViewer" Height="600" Width="800"
+        MouseDown="Window_MouseDown"
+        MouseDoubleClick="Window_MouseDoubleClick"
+        LocationChanged="Window_LocationChanged"
+        WindowStartupLocation="Manual"
+        SizeChanged="Window_SizeChanged"
+        Closing="Window_Closing">
     <Grid x:Name="SpineContainer">
-        <s:MonoGameContentControl Width="800" Height="600">
+        <s:MonoGameContentControl x:Name="MGControl" HorizontalAlignment="Left" VerticalAlignment="Top">
             <s:MonoGameContentControl.DataContext>
                 <locals:SpineManager x:Name="mSpineManager"/>
             </s:MonoGameContentControl.DataContext>
