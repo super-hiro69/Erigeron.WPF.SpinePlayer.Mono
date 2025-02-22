@@ -17,11 +17,12 @@
 ## How to use?
    - First, download or export the specified Spine 3.8 files(*.atlas, *.skel, *.png included)
    - Second, modifiy the config file (auto-generated if not exisit, default at .\\data\\Default)
-      - AtlasPath/SkelPath: for floating and topmost spine window
+      - ForeSpine/DesktopSpine: Floating & topmost spine window/Spine window inside the desktop
+      - AtlasPath/SkelPath: Atlas/Skel file path
+      - Start/Idle/Touch/DieAnimationPool: anmations set when started/after starting/touched/closing(Alt+F4)
+      - SkeletonScale: Scale level for spine skeleton
       - DesktopInsert: enable another window inside the desktop
       - StaticDesktop: set static image from PicPathD for the window inside the desktop
-      - Start/Idle/Touch/DieAnimationPool: anmations for the floating window when started/after starting/touched/closing(Alt+F4)
-      - Start/Idle/Touch/DieAnimationPoolD: anmations for the window inside the desktop when started/after starting/touched(actually no use)/closing
       - FullscreenHide: Hide when the foreground application is in fullscreen
       - HideAppHost: Hide this application in the application switcher view
    - You can also launch the application using startArgs like ".\app.exe SPECIFIED_CONFIG_LOCATION" to load/save the specified config
@@ -29,11 +30,12 @@
 ## 如何使用
    - 下载/导出对应的 Spine 3.8 文件(包含 *.atlas, *.skel, *.png，可以从 [Prts](https://prts.wiki/) 或者其它网站下载, 注意: *.png 一般不可以更名, 因为它与结构文件相绑定，其它两个可以更名)
    - 修改配置文件(默认在 .\\data\\Default, 启动程序后如果指定位置没有配置文件，则会自动生成)
-      - AtlasPath/SkelPath: 前台窗口的 Spine 文件配置
+      - ForeSpine/DesktopSpine: 前台 Spine 窗口/嵌入桌面的 Spine 窗口
+      - AtlasPath/SkelPath: Spine 文件路径配置
+      - Start/Idle/Touch/DieAnimationPool: 当启动程序/启动后/点击(触摸)/关闭程序(Alt+F4) 时播放的动画
+      - SkeletonScale: Spine 缩放级别，直接影响动画输出的尺寸
       - DesktopInsert: 开启嵌入桌面功能（一个额外的 Spine 窗口/静态图像窗口)
       - StaticDesktop: 设置嵌入的为静态图像(PicPathD, 必须为全路径)
-      - Start/Idle/Touch/DieAnimationPool: 当启动程序/启动后/点击(触摸)/关闭程序(Alt+F4) 时前台窗口播放的动画
-      - Start/Idle/Touch/DieAnimationPoolD: 同上, 但针对于嵌入窗口
       - FullscreenHide: 前台程序最大化时，自动隐藏窗口
       - HideAppHost: 不在 Alt+Tab 中显示
    - 自定义配置文件目录: ".\app.exe 自定义位置"

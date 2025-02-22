@@ -16,7 +16,6 @@
         MouseDoubleClick="Window_MouseDoubleClick"
         LocationChanged="Window_LocationChanged"
         WindowStartupLocation="Manual"
-        SizeChanged="Window_SizeChanged"
         Closing="Window_Closing">
     <Grid x:Name="SpineContainer">
         <s:MonoGameContentControl x:Name="MGControl" HorizontalAlignment="Left" VerticalAlignment="Top">

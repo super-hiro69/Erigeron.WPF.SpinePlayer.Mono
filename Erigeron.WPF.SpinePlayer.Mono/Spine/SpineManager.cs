@@ -1,24 +1,25 @@
 ﻿using Erigeron.WPF.SpinePlayer.Mono.Helper;
 using Erigeron.WPF.SpinePlayer.Mono.Support;
 using Microsoft.Xna.Framework;
+using System.Runtime.Versioning;
+using System.Windows;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 {
+    [SupportedOSPlatform("Windows")]
     class SpineManager : MonoGameViewModel
     {
         private SpineLoader? _spineLoader = null;
-        public string _atlasPath = "data/char_4119_wanqin_epoque_41.atlas";
-        public string _skelPath = "data/char_4119_wanqin_epoque_41.skel";
-        internal List<string> StartAnimationPool { get; set; } = new() { "Default" };
-        internal List<string> IdleAnimationPool { get; set; } = new() { "Attack" };
-        internal List<string> TouchAnimationPool { get; set; } = new() { "Interact" };
-        internal List<string> DieAnimationPool { get; set; } = new() { "Die" };
-        internal float[] _xy = [-1, -1];
+        internal SpineConfig? sc = null;
 
         public override void LoadContent()
         {
             _spineLoader ??= new(GraphicsDeviceInstance);
-            _spineLoader.Initialize(_atlasPath, _skelPath, _xy, StartAnimationPool, IdleAnimationPool, TouchAnimationPool, DieAnimationPool);
+            if (sc!.SkeletonWidth <= 0)
+                sc.SkeletonWidth = sc.WindowWidth <= 0 ? SystemParameters.PrimaryScreenWidth : sc.WindowWidth;
+            if (sc!.SkeletonHeight <= 0)
+                sc.SkeletonHeight = sc.WindowHeight <= 0 ? SystemParameters.PrimaryScreenHeight : sc.WindowHeight;
+            _spineLoader.Initialize(sc!);
         }
 
         public override void OnMouseUp(MouseStateArgs mouseState)
@@ -39,7 +40,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 
         public void UpdateSize(double Width, double Height)
         {
-            _spineLoader?.SizeChanged(Width, Height);
+
         }
 
         internal void TouchEvent()

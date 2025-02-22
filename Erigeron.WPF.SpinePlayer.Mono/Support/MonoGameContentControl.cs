@@ -21,6 +21,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,6 +35,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Support;
 
+[SupportedOSPlatform("windows")]
 public sealed class MonoGameContentControl : ContentControl, IDisposable
 {
     private readonly MonoGameGraphicsDeviceService _graphicsDeviceService = new MonoGameGraphicsDeviceService();

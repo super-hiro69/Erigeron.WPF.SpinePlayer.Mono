@@ -3,22 +3,20 @@ using Erigeron.WPF.SpinePlayer.Mono.Support;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Spine;
+using System.Runtime.Versioning;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 {
+    [SupportedOSPlatform("Windows")]
     public class SpineLoader
     {
         protected GraphicsDevice _graphicsDevice;
+        SpineConfig? _sc = null;
         SkeletonRenderer? skeletonRenderer;
         List<string>? _animationList;
         Atlas? atlas;
         Skeleton? skeleton;
         AnimationState? state;
-        internal float[] _xy = [-1, -1];
-        internal List<string> StartAnimationPool { get; set; } = new() { "Default" };
-        internal List<string> IdleAnimationPool { get; set; } = new() { "Attack" };
-        internal List<string> TouchAnimationPool { get; set; } = new() { "Interact" };
-        internal List<string> DieAnimationPool { get; set; } = new() { "Die" };
         internal Queue<string>? AnimationQ = null;
         public SpineLoader(GraphicsDevice graphicsDevice)
         {
@@ -30,26 +28,22 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 
         }
 
-        public void Initialize(string atlasPath, string skelPath, float[] xy, List<string> startAnimationPool, List<string> idleAnimationPool, List<string> touchAnimationPool, List<string> dieAnimationPool)
+        public void Initialize(SpineConfig sc)
         {
-            _xy = xy;
-            StartAnimationPool = startAnimationPool;
-            IdleAnimationPool = idleAnimationPool;
-            TouchAnimationPool = touchAnimationPool;
-            DieAnimationPool = dieAnimationPool;
+            _sc = sc;
             skeletonRenderer = new SkeletonRenderer(_graphicsDevice);
             skeletonRenderer.PremultipliedAlpha = true;
-            atlas = new Atlas(atlasPath, new XnaTextureLoader(_graphicsDevice));
+            atlas = new Atlas(_sc.AtlasPath, new XnaTextureLoader(_graphicsDevice));
 
             SkeletonBinary binary = new SkeletonBinary(atlas);
-            binary.Scale = 0.5f;
-            SkeletonData skeletonData = binary.ReadSkeletonData(skelPath);
+            binary.Scale = _sc.SkeletonScale;
+            SkeletonData skeletonData = binary.ReadSkeletonData(_sc.SkelPath);
 
             skeleton = new Skeleton(skeletonData);
             AnimationStateData stateData = new AnimationStateData(skeleton.Data);
             state = new AnimationState(stateData);
-            skeleton.X = _xy[0] / 2;
-            skeleton.Y = _xy[1];
+            skeleton.X = ((float)_sc.SkeletonWidth) / 2;
+            skeleton.Y = ((float)sc.SkeletonHeight);
             // We want 0.2 seconds of mixing time when transitioning from
             // any animation to any other animation.
             stateData.DefaultMix = 0.2f;
@@ -64,7 +58,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
         private void SetStartAnimation()
         {
 
-            var animation = StartAnimationPool[new Random().Next(StartAnimationPool.Count)];
+            var animation = _sc!.StartAnimationPool[new Random().Next(_sc.StartAnimationPool.Count)];
             if (animation != null)
             {
                 SetAnimationQ(animation);
@@ -84,7 +78,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 
             state!.Complete += delegate
             {
-                if (AnimationQ.TryDequeue(out string? s) && s != null && _animationList!.Contains(s))
+                if (AnimationQ!.TryDequeue(out string? s) && s != null && _animationList!.Contains(s))
                 {
                     state!.SetAnimation(0, s!, false);
                 }
@@ -96,7 +90,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
         }
         private void SetIdleAnimation()
         {
-            var animation = IdleAnimationPool[new Random().Next(IdleAnimationPool.Count)];
+            var animation = _sc!.IdleAnimationPool[new Random().Next(_sc.IdleAnimationPool.Count)];
             if (animation == null)
             {
                 SetIdleAnimation();
@@ -114,7 +108,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
         }
         internal void SetTouchAnimation()
         {
-            var animation = TouchAnimationPool[new Random().Next(TouchAnimationPool.Count)];
+            var animation = _sc!.TouchAnimationPool[new Random().Next(_sc.TouchAnimationPool.Count)];
             if (animation == null)
             {
                 SetIdleAnimation();
@@ -132,7 +126,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
         }
         internal void SetDieAnimation()
         {
-            var animation = DieAnimationPool[new Random().Next(DieAnimationPool.Count)];
+            var animation = _sc!.DieAnimationPool[new Random().Next(_sc.DieAnimationPool.Count)];
             if (animation == null)
             {
                 Environment.Exit(0);
@@ -174,7 +168,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
         }
         private void EnumAnimation()
         {
-            _animationList = skeleton.Data.Animations.Select(x => x.Name).ToList();
+            _animationList = skeleton!.Data.Animations.Select(x => x.Name).ToList();
         }
 
         public void OnMouseUp(MouseStateArgs mouseState)
@@ -186,16 +180,10 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
             state!.Update(deltaTime);
             state.Apply(skeleton);
             skeleton!.UpdateWorldTransform();
-            ((BasicEffect)skeletonRenderer!.Effect).Projection = Matrix.CreateOrthographicOffCenter(0, _xy[0], _xy[1], 0, 1, 0);
+            ((BasicEffect)skeletonRenderer!.Effect).Projection = Matrix.CreateOrthographicOffCenter(0, ((float)_sc!.SkeletonWidth), ((float)_sc.SkeletonHeight) , 0, 1, 0);
             skeletonRenderer.Begin();
             skeletonRenderer.Draw(skeleton);
             skeletonRenderer.End();
-        }
-
-        internal void SizeChanged(double width, double height)
-        {
-            _xy[0] = (float)width;
-            _xy[1] = (float)height;
         }
     }
 }

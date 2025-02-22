@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.Versioning;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Support;
 
+[SupportedOSPlatform("Windows")]
 public class MouseStateArgs
 {
     private readonly IInputElement _element;

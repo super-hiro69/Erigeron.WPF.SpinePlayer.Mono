@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.Versioning;
+using System.Windows;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 ///Thanks for his/her support!
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Support;
+
 public interface IMonoGameViewModel : IDisposable
 {
     IGraphicsDeviceService GraphicsDeviceService { get; set; }
@@ -31,6 +33,7 @@ public interface IMonoGameViewModel : IDisposable
     void SizeChanged(object sender, SizeChangedEventArgs args);
 }
 
+[SupportedOSPlatform("Windows")]
 public class MonoGameViewModel : ViewModel, IMonoGameViewModel
 {
     public MonoGameViewModel()

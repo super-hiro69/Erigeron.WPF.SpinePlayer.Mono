@@ -1,10 +1,12 @@
 ﻿using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Forms;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Helper
 {
+    [SupportedOSPlatform("Windows")]
     class Window
     {
 

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.Versioning;
+using System.Windows;
 using System.Windows.Interop;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
@@ -8,6 +9,7 @@ using SharpDX.Direct3D9;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Support;
 
+[SupportedOSPlatform("windows")]
 public class MonoGameGraphicsDeviceService : IGraphicsDeviceService, IDisposable
 {
     public MonoGameGraphicsDeviceService()
