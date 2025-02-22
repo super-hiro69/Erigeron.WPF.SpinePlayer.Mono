@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Erigeron.WPF.SpinePlayer.Mono.Helper
+﻿namespace Erigeron.WPF.SpinePlayer.Mono.Helper
 {
     public class SpineConfig
     {
@@ -20,36 +14,39 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Helper
         /// <summary>
         /// Left of the skeleton
         /// </summary>
-        public double MarginLeft { get; set; } = -1;
+        public double? MarginLeft { get; set; } = null;
         /// <summary>
         /// Top of the skeleton
         /// </summary>
-        public double MarginTop { get; set; } = -1;
+        public double? MarginTop { get; set; } = null;
+        public double? SkeletonX { get; set; } = null;
+        public double? SkeletonY { get; set; } = null;
+        public double SkeletonMix { get; set; } = 0.2;
         /// <summary>
         /// Width of the skeleton
         /// </summary>
-        public double SkeletonWidth { get; set; } = -1;
+        public double? SkeletonWidth { get; set; } = null;
         /// <summary>
         /// Height of the skeleton
         /// </summary>
-        public double SkeletonHeight { get; set; } = -1;
+        public double? SkeletonHeight { get; set; } = null;
         public float SkeletonScale { get; set; } = 0.5f;
         /// <summary>
         /// Left of the Viewer Window
         /// </summary>
-        public double WindowLeft { get; set; } = 0;
+        public double? WindowLeft { get; set; } = null;
         /// <summary>
         /// Top of the Viewer Window
         /// </summary>
-        public double WindowTop { get; set; } = 0;
+        public double? WindowTop { get; set; } = null;
         /// <summary>
         /// Width of the Viewer Window
         /// </summary>
-        public double WindowWidth { get; set; } = -1;
+        public double? WindowWidth { get; set; } = null;
         /// <summary>
         /// Height of the Viewer Window
         /// </summary>
-        public double WindowHeight { get; set; } = -1;
+        public double? WindowHeight { get; set; } = null;
         public List<string> StartAnimationPool { get; set; } = new() { "Default", "Relax", "Start" };
         public List<string> IdleAnimationPool { get; set; } = new() { "Attack", "[Skill_Begin|Skill_Loop|Skill_Loop|Skill_End]", "Skill2", "Move", "Relax", "Special" };
         public List<string> TouchAnimationPool { get; set; } = new() { "Interact", "[Skill_Begin|Skill_Loop|Skill_Loop|Skill_End]" };

@@ -24,7 +24,10 @@ public partial class App : Application
         if (e.Args.Length > 0)
         {
             chPath = e.Args[0];
-            ch.ImportConfig(chPath);
+            if (File.Exists(chPath))
+                ch.ImportConfig(chPath);
+            else
+                ch.ExportConfig(chPath);
         }
         else if (!System.IO.File.Exists(".\\data\\Default"))
         {
@@ -34,7 +37,9 @@ public partial class App : Application
         else
             ch.ImportConfig(".\\data\\Default");
         bool boot = false;
-        if (System.IO.File.Exists(ch.ForeSpine.AtlasPath) && System.IO.File.Exists(ch.ForeSpine.SkelPath))
+        var psw = SystemParameters.PrimaryScreenWidth;
+        var psh = SystemParameters.PrimaryScreenHeight;
+        if (File.Exists(ch.ForeSpine.AtlasPath) && File.Exists(ch.ForeSpine.SkelPath))
         {
             boot = true;
             sv = CreateSpineViewer(ch.ForeSpine);
@@ -80,10 +85,10 @@ public partial class App : Application
             boot = true;
             ImageWin iw = new();
             iw.DesktopImage.Source = Utils.GetBitmapImage(ch.PicPathD);
-            iw.Width = ch.DesktopSpine.WindowWidth < 0 ? SystemParameters.PrimaryScreenWidth : ch.DesktopSpine.WindowWidth;
-            iw.Height = ch.DesktopSpine.WindowHeight < 0 ? SystemParameters.PrimaryScreenHeight : ch.DesktopSpine.WindowHeight;
-            Canvas.SetLeft(iw, ch.DesktopSpine.MarginLeft);
-            Canvas.SetTop(iw, ch.DesktopSpine.MarginTop);
+            iw.Width = ch.DesktopSpine.WindowWidth ?? psw;
+            iw.Height = ch.DesktopSpine.WindowHeight ?? psh;
+            Canvas.SetLeft(iw, ch.DesktopSpine.MarginLeft ?? psw / 2 - iw.Width / 2);
+            Canvas.SetTop(iw, ch.DesktopSpine.MarginTop ?? psh / 2 - iw.Height / 2);
             iw.Loaded += (e, args) =>
             {
                 var handle = new WindowInteropHelper(iw).Handle;
@@ -116,20 +121,18 @@ public partial class App : Application
 
     private SpineViewer CreateSpineViewer(SpineConfig sc)
     {
+        var psw = SystemParameters.PrimaryScreenWidth;
+        var psh = SystemParameters.PrimaryScreenHeight;
         var s = new SpineViewer();
-        Canvas.SetLeft(s, sc.WindowLeft);
-        Canvas.SetTop(s, sc.WindowTop);
-        if (sc.WindowWidth >= 0)
-            s.Width = sc.WindowWidth;
-        else
-            s.Width = SystemParameters.PrimaryScreenWidth;
-        if (sc.WindowHeight >= 0)
-            s.Height = sc.WindowHeight;
-        else
-            s.Height = SystemParameters.PrimaryScreenHeight;
-        s.MGControl.Width = sc.SkeletonWidth <= 0 ? s.Width : sc.SkeletonWidth;
-        s.MGControl.Height = sc.SkeletonHeight <= 0 ? s.Height : sc.SkeletonHeight;
-        s.MGControl.Margin = new(sc.MarginLeft, sc.MarginTop, 0, 0);
+        s.Width = sc.WindowWidth ?? psw;
+        s.Height = sc.WindowHeight ?? psh;
+
+        Canvas.SetLeft(s, sc.WindowLeft ?? psw / 2 - s.Width / 2);
+        Canvas.SetTop(s, sc.WindowTop ?? psh / 2 - s.Height / 2);
+
+        s.MGControl.Width = sc.SkeletonWidth ?? s.Width;
+        s.MGControl.Height = sc.SkeletonHeight ?? s.Height;
+        s.MGControl.Margin = new(sc.MarginLeft ?? s.Width / 2 - s.MGControl.Width / 2, sc.MarginTop ?? s.Height / 2 - s.MGControl.Height / 2, 0, 0);
         return s;
     }
 

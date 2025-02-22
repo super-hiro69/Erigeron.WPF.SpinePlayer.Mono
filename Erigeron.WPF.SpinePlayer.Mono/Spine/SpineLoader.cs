@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Spine;
 using System.Runtime.Versioning;
+using System.Windows;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 {
@@ -42,11 +43,11 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
             skeleton = new Skeleton(skeletonData);
             AnimationStateData stateData = new AnimationStateData(skeleton.Data);
             state = new AnimationState(stateData);
-            skeleton.X = ((float)_sc.SkeletonWidth) / 2;
-            skeleton.Y = ((float)sc.SkeletonHeight);
+            skeleton.X = ((float)(_sc.SkeletonX ?? GetSkeletonWidth())) / 2;
+            skeleton.Y = ((float)(_sc.SkeletonY ?? GetSkeletonHeight()));
             // We want 0.2 seconds of mixing time when transitioning from
             // any animation to any other animation.
-            stateData.DefaultMix = 0.2f;
+            stateData.DefaultMix = ((float)sc.SkeletonMix);
             EnumAnimation();
             if (_animationList!.Count > 0)
                 SetStartAnimation();
@@ -180,10 +181,21 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
             state!.Update(deltaTime);
             state.Apply(skeleton);
             skeleton!.UpdateWorldTransform();
-            ((BasicEffect)skeletonRenderer!.Effect).Projection = Matrix.CreateOrthographicOffCenter(0, ((float)_sc!.SkeletonWidth), ((float)_sc.SkeletonHeight) , 0, 1, 0);
+            ((BasicEffect)skeletonRenderer!.Effect).Projection = Matrix.CreateOrthographicOffCenter(0, ((float)GetSkeletonWidth()), ((float)GetSkeletonHeight()), 0, 1, 0);
             skeletonRenderer.Begin();
             skeletonRenderer.Draw(skeleton);
             skeletonRenderer.End();
+        }
+
+        private double GetSkeletonWidth()
+        {
+            return _sc!.SkeletonWidth ?? _sc.WindowWidth ?? SystemParameters.PrimaryScreenWidth;
+        }
+
+
+        private double GetSkeletonHeight()
+        {
+            return _sc!.SkeletonHeight ?? _sc.WindowHeight ?? SystemParameters.PrimaryScreenHeight;
         }
     }
 }

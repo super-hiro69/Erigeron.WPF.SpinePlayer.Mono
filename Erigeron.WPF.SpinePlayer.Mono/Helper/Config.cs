@@ -1,8 +1,10 @@
 ﻿using System.IO;
+using System.Runtime.Versioning;
 using System.Text.Json;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Helper
 {
+    [SupportedOSPlatform("Windows")]
     public class Config
     {
         public SpineConfig ForeSpine { get; set; } = new();
