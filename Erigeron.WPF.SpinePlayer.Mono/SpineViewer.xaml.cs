@@ -2,17 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Interop;
 
 namespace Erigeron.WPF.SpinePlayer.Mono
 {
+    [SupportedOSPlatform("Windows")]
     public partial class SpineViewer : System.Windows.Window
     {
         private bool Locked = true;
         public SpineViewer()
         {
             InitializeComponent();
+            mSpineManager.SetParent(this);
         }
 
 

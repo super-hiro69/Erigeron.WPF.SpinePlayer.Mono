@@ -30,7 +30,9 @@
         /// Height of the skeleton
         /// </summary>
         public double? SkeletonHeight { get; set; } = null;
-        public float SkeletonScale { get; set; } = 0.5f;
+        public float? SkeletonScale { get; set; } = 0.5f;
+        public float? SkeletonScaleX { get; set; } = 1f;
+        public float? SkeletonScaleY { get; set; } = 1f;
         /// <summary>
         /// Left of the Viewer Window
         /// </summary>
@@ -46,10 +48,17 @@
         /// <summary>
         /// Height of the Viewer Window
         /// </summary>
+        public bool? EnableMove { get; set; } = true;
+        public double? MoveClock { get; set; } = 50;
         public double? WindowHeight { get; set; } = null;
+        public double? MoveMin { get; set; } = 0.0;
+        public double? MoveMax { get; set; } = null;
+        public bool? AutoRevserse { get; set; } = null;
+        public double? ReversePossibility { get; set; } = 50;
         public List<string> StartAnimationPool { get; set; } = new() { "Default", "Relax", "Start" };
         public List<string> IdleAnimationPool { get; set; } = new() { "Attack", "[Skill_Begin|Skill_Loop|Skill_Loop|Skill_End]", "Skill2", "Move", "Relax", "Special" };
         public List<string> TouchAnimationPool { get; set; } = new() { "Interact", "[Skill_Begin|Skill_Loop|Skill_Loop|Skill_End]" };
         public List<string> DieAnimationPool { get; set; } = new() { "Die", "Sit", "Sleep" };
+        public Dictionary<string, double> MoveAnimationPool { get; set; } = new() { { "Move", 1.0 }, { "Move2", 1.5 } };
     }
 }
