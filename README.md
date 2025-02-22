@@ -5,6 +5,11 @@
   
 ## 这是什么?
   此项目为在 Windows 上播放特定版本的 Spine 动画而生(主要是播放某些铸币小人😂)。
+
+## Preview/效果查看
+
+![2](https://github.com/user-attachments/assets/99766767-c3f3-41b0-8420-3c9cb98122ec)
+
   
 ## Prerequisite
   - (dot NET 8.x Desktop Runtime)[https://dotnet.microsoft.com/en-us/download/dotnet/8.0]
