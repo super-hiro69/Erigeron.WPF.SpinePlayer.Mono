@@ -11,7 +11,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono
     [SupportedOSPlatform("Windows")]
     public partial class SpineViewer : System.Windows.Window
     {
-        private bool Locked = true;
+        internal bool Locked = true;
         public SpineViewer()
         {
             InitializeComponent();

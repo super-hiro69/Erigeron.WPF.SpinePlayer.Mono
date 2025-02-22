@@ -68,20 +68,20 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
                 };
                 _dst.Tick += (e, args) =>
                 {
-                    if (_moveDirection != 0 && parent != null)
+                    if (_moveDirection != 0 && parent != null && parent.Locked)
                     {
 
                         var l = parent.Left + _moveDirection * skeleton.ScaleX;
-                        if (l <= (_sc.MoveMin ?? 0.0))
+                        if (l <= (_sc?.MoveMin ?? 0.0))
                         {
 
-                            l = (_sc.MoveMin ?? 0.0);
+                            l = (_sc?.MoveMin ?? 0.0);
                             skeleton.ScaleX = -1.0f * skeleton.ScaleX;
                         }
-                        if (l >= (_sc.MoveMax ?? SystemParameters.PrimaryScreenWidth))
+                        if (l >= (_sc?.MoveMax ?? SystemParameters.PrimaryScreenWidth))
                         {
 
-                            l = (_sc.MoveMax ?? SystemParameters.PrimaryScreenWidth);
+                            l = (_sc?.MoveMax ?? SystemParameters.PrimaryScreenWidth);
                             skeleton.ScaleX = -1.0f * skeleton.ScaleX;
                         }
                         Canvas.SetLeft(parent, l);
@@ -155,22 +155,33 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
         internal void SetDieAnimation()
         {
             var animation = _sc!.DieAnimationPool[new Random().Next(_sc.DieAnimationPool.Count)];
-            if (animation == null)
+            if (animation != null || !DequeueOne())
             {
-                Environment.Exit(0);
-                return;
-            }
-            SetAnimationQ(animation);
-            if (DequeueOne())
-            {
-                state!.Complete += (e) =>
+
+                SetAnimationQ(animation);
+                if (DequeueOne())
                 {
+                    state!.Complete += (e) =>
+                    {
+                        DieMainAnimation();
+                    };
+                    return;
+                }
+            }
+            DieMainAnimation();
+        }
+
+        private void DieMainAnimation()
+        {
+            if (parent != null)
+            {
+                var s = Helper.Animation.AddDoubleAnimaton(0, 250, parent, "Opacity", null);
+                s.Completed += (e, args) =>
+                {
+                    parent.Opacity = 0;
                     Environment.Exit(0);
                 };
-            }
-            else
-            {
-                Environment.Exit(0);
+                s.Begin();
             }
         }
 
@@ -195,6 +206,7 @@ namespace Erigeron.WPF.SpinePlayer.Mono.Spine
 
         private void SetAnimationAndMove(string? s)
         {
+            _moveDirection = 0.0;
             state!.SetAnimation(0, s!, false);
             if (_sc!.AutoRevserse == true)
             {

@@ -87,8 +87,8 @@ public partial class App : Application
             iw.DesktopImage.Source = Utils.GetBitmapImage(ch.PicPathD);
             iw.Width = ch.DesktopSpine.WindowWidth ?? psw;
             iw.Height = ch.DesktopSpine.WindowHeight ?? psh;
-            Canvas.SetLeft(iw, ch.DesktopSpine.MarginLeft ?? psw / 2 - iw.Width / 2);
-            Canvas.SetTop(iw, ch.DesktopSpine.MarginTop ?? psh / 2 - iw.Height / 2);
+            Canvas.SetLeft(iw, ch.DesktopSpine.SkeletonLeft ?? psw / 2 - iw.Width / 2);
+            Canvas.SetTop(iw, ch.DesktopSpine.SkeletonTop ?? psh / 2 - iw.Height / 2);
             iw.Loaded += (e, args) =>
             {
                 var handle = new WindowInteropHelper(iw).Handle;
@@ -132,7 +132,7 @@ public partial class App : Application
 
         s.MGControl.Width = sc.SkeletonWidth ?? s.Width;
         s.MGControl.Height = sc.SkeletonHeight ?? s.Height;
-        s.MGControl.Margin = new(sc.MarginLeft ?? s.Width / 2 - s.MGControl.Width / 2, sc.MarginTop ?? s.Height / 2 - s.MGControl.Height / 2, 0, 0);
+        s.MGControl.Margin = new(sc.SkeletonLeft ?? s.Width / 2 - s.MGControl.Width / 2, sc.SkeletonTop ?? s.Height / 2 - s.MGControl.Height / 2, 0, 0);
         return s;
     }
 
@@ -149,25 +149,28 @@ public partial class App : Application
                 PlaySound(Utils.GetRandomFile(Path.Combine(ch.AudioPath, "Idle")));
             if (sv == null)
                 return;
-            if (Utils.IsForegroundFullScreen() && sv.Visibility != Visibility.Collapsed)
+            if (ch.FullscreenHide)
             {
-                var s = Animation.AddDoubleAnimaton(0, 250, sv, "Opacity", null);
-                s.Completed += (e, args) =>
+                if (Utils.IsForegroundFullScreen() && sv.Visibility != Visibility.Collapsed)
                 {
-                    sv.Opacity = 0;
-                    sv.Visibility = Visibility.Collapsed;
-                };
-                s.Begin();
-            }
-            if (!Utils.IsForegroundFullScreen() && sv.Visibility != Visibility.Visible)
-            {
-                sv.Visibility = Visibility.Visible;
-                var s = Animation.AddDoubleAnimaton(1, 250, sv, "Opacity", null);
-                s.Completed += (e, args) =>
+                    var s = Animation.AddDoubleAnimaton(0, 250, sv, "Opacity", null);
+                    s.Completed += (e, args) =>
+                    {
+                        sv.Opacity = 0;
+                        sv.Visibility = Visibility.Collapsed;
+                    };
+                    s.Begin();
+                }
+                if (!Utils.IsForegroundFullScreen() && sv.Visibility != Visibility.Visible)
                 {
-                    sv.Opacity = 1;
-                };
-                s.Begin();
+                    sv.Visibility = Visibility.Visible;
+                    var s = Animation.AddDoubleAnimaton(1, 250, sv, "Opacity", null);
+                    s.Completed += (e, args) =>
+                    {
+                        sv.Opacity = 1;
+                    };
+                    s.Begin();
+                }
             }
         };
         _timer.Start();

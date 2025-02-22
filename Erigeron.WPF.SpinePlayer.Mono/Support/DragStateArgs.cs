@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.Versioning;
+using System.Windows;
 using Microsoft.Xna.Framework;
 
 ///This file is originated from https://github.com/damian-666/MonoGame.WpfCore
@@ -6,6 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Erigeron.WPF.SpinePlayer.Mono.Support;
 
+[SupportedOSPlatform("Windows")]
 public class DragStateArgs
 {
     private readonly IInputElement _element;
